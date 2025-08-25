@@ -1,0 +1,111 @@
+/* Feed ocupa todo el ancho en móvil */
+.explore-feed-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: #111;
+}
+/* Feed vertical, sin scroll horizontal */
+.explore-feed {
+  width: 100vw;
+  max-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+}
+@media (min-width: 601px) {
+  .explore-feed {
+    width: 400px;
+    max-width: 100vw;
+  }
+}
+  padding: 20px;
+  margin-left: 240px; /* Ajustar al ancho de la barra lateral */
+  overflow-y: auto;
+  box-sizing: border-box;
+  background-color: var(--background-color);
+}
+
+.categories-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.categories-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.category-button {
+  padding: 8px 16px;
+  border: 1px solid rgba(22, 24, 35, 0.12);
+  border-radius: 20px;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.category-button:hover {
+  background-color: rgba(22, 24, 35, 0.03);
+}
+
+.category-button.active {
+  background-color: var(--text-color);
+  color: var(--background-color);
+}
+
+/* Tarjetas apiladas verticalmente y centradas en móvil */
+.explore-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 20px;
+}
+@media (min-width: 601px) {
+  .explore-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+  }
+}
+
+/* Tarjeta Explore ocupa todo el ancho en móvil */
+.explore-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto 16px auto;
+  display: block;
+}
+@media (min-width: 601px) {
+  .explore-card {
+    width: 250px;
+    max-width: 100%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .category-button {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  
+  .category-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+
