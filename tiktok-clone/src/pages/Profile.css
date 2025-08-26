@@ -178,7 +178,7 @@
   justify-content: center;
   gap: 20px;
   margin-bottom: 40px;
-  padding: 20px;
+
   background: var(--background-color);
   border-radius: 12px;
 }

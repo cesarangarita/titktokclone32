@@ -91,7 +91,7 @@ function ExploreVideoCard({ video }) {
           </span>
           <span role="img" aria-label="comment" style={{ display: 'inline-flex', alignItems: 'center', marginLeft: 8 }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
-              <use xlink:href="#Bubble_Ellipsis_Right_Fill-7ce6d3b3"></use>
+              <use xlinkHref="#Bubble_Ellipsis_Right_Fill-7ce6d3b3"></use>
             </svg>
           </span>
         </div>
@@ -189,7 +189,7 @@ function Explore() {
           ))
         )}
       </div>
-      <div class="sidebar-footer">
+  <div className="sidebar-footer">
   <div style={{marginBottom: '8px', color: '#111'}}>Cuentas que sigues</div>
   <div style={{marginBottom: '8px', color: '#111'}}>Las cuentas que sigues aparecerán aquí</div>
   <div style={{marginBottom: '8px', color: '#111'}}>© 2025 TikTok</div>

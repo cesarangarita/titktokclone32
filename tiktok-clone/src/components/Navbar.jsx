@@ -204,23 +204,6 @@ function Navbar() {
           </svg>{" "}
           Perfil
         </Link>{" "}
-        <Link
-          to="/more"
-          className={`nav-item ${
-            location.pathname === "/more" ? "active" : ""
-          }`}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 48 48"
-            fill="currentColor"
-            width="24"
-            height="24"
-          >
-            <path d="M5 24a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" />
-          </svg>{" "}
-          Más
-        </Link>
       </div>
 
       <div className="sidebar-divider"></div>
