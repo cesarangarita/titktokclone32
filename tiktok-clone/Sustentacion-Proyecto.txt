@@ -1,0 +1,87 @@
+# Sustentación del Proyecto TikTok Clone
+
+Este documento explica la estructura, tecnologías y variables clave del proyecto TikTok Clone desarrollado con React, Vite y Supabase.
+
+## Tecnologías Utilizadas
+
+### 1. React
+- **Ubicación principal:** `src/`
+- **Uso:** Framework principal para construir la interfaz de usuario y la lógica de componentes.
+- **Componentes clave:**
+  - `src/components/`: Navbar, MobileNav, VideoCard, LoginModal, ProtectedRoute
+  - `src/pages/`: Home, Explore, Profile, Upload, Login
+
+### 2. Vite
+- **Ubicación principal:** `vite.config.js`, `package.json`
+- **Uso:** Herramienta de build y desarrollo rápido para proyectos React.
+- **Configuración:**
+  - `vite.config.js`: Configura plugins y base de rutas.
+  - `package.json`: Scripts de desarrollo y build (`dev`, `build`, `preview`).
+
+### 3. Supabase
+- **Ubicación principal:** `src/services/supabase.js`
+- **Uso:** Backend como servicio para autenticación, base de datos y almacenamiento de archivos (videos, imágenes).
+- **Variables importantes:**
+  - `supabaseUrl`: URL del proyecto Supabase.
+  - `supabaseKey`: Clave pública para acceso.
+  - `supabase`: Cliente principal para interactuar con Supabase.
+
+### 4. React Router
+- **Ubicación principal:** `src/App.jsx`, componentes y páginas
+- **Uso:** Navegación entre páginas y rutas SPA.
+- **Variables importantes:**
+  - `BrowserRouter`, `Routes`, `Route`, `useNavigate`, `useLocation`
+
+### 5. Bootstrap
+- **Ubicación principal:** Importado en `src/App.jsx`
+- **Uso:** Estilos base y componentes responsivos.
+
+### 6. Context API
+- **Ubicación principal:** `src/context/AuthContext.jsx`
+- **Uso:** Manejo global de autenticación y sesión de usuario.
+- **Variables importantes:**
+  - `AuthContext`: Contexto principal.
+  - `useAuth`: Hook para acceder al contexto.
+
+### 7. CSS Modules y Estilos
+- **Ubicación principal:** `src/*.css`, `src/components/*.css`, `src/pages/*.css`
+- **Uso:** Estilos personalizados para cada componente y página.
+
+## Estructura del Proyecto
+
+- `public/`: Archivos estáticos y assets globales.
+- `src/`: Código fuente principal.
+  - `assets/`: Imágenes, fuentes y SVGs.
+  - `components/`: Componentes reutilizables.
+  - `context/`: Contextos globales (Auth).
+  - `pages/`: Páginas principales de la app.
+  - `services/`: Integraciones externas (Supabase).
+- `package.json`: Configuración de dependencias y scripts.
+- `vite.config.js`: Configuración de Vite.
+- `vercel.json`: Configuración para despliegue en Vercel.
+
+## Variables y Ubicación
+
+- **Autenticación:**
+  - `AuthContext` (`src/context/AuthContext.jsx`): Maneja el estado de usuario, login, logout.
+  - `useAuth` (`src/context/useAuth.js`): Hook para acceder al usuario actual.
+- **Supabase:**
+  - `supabaseUrl`, `supabaseKey`, `supabase` (`src/services/supabase.js`): Conexión y operaciones con la base de datos y storage.
+- **Rutas y Navegación:**
+  - `BrowserRouter`, `Routes`, `Route` (`src/main.jsx`, `src/App.jsx`): Definen la navegación SPA.
+- **Variables de Estilo:**
+  - Variables CSS en `src/App.css` y otros archivos para colores, fuentes y responsividad.
+
+## Despliegue
+
+- **Vercel:**
+  - `vercel.json`: Redirección de rutas para SPA y configuración de build.
+  - Output de build en `dist/`.
+
+## Resumen
+
+El proyecto TikTok Clone es una SPA moderna que utiliza React para la interfaz, Vite para el build, Supabase como backend y almacenamiento, React Router para navegación, Bootstrap para estilos base y Context API para autenticación. Cada tecnología y variable está ubicada en archivos específicos para mantener la organización y escalabilidad del proyecto.
+
+---
+
+Este documento puede ser ampliado con detalles de cada componente, función o variable según lo requiera la sustentación.

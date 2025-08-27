@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, memo } from 'react'
 import { supabase } from '../services/supabase'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaPlay, FaHeart } from 'react-icons/fa'
@@ -6,40 +6,64 @@ import './Explore.css'
 
 const categories = [
   'Todo',
-  'Canto y baile',
+  ' baile',
   'Comedia',
   'Deportes',
-  'Animes y cómics',
-  'Relaciones',
-  'Espectáculos',
-  'Sincronía de labios',
-  'Vida cotidiana',
-  'Cuidado personal'
+  'games',
+  'Tecnologia'
+  
 ]
 
-function ExploreVideoCard({ video }) {
+const ExploreVideoCard = memo(function ExploreVideoCard({ video }) {
   const videoRef = useRef(null);
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    if (videoRef.current) {
-      const playPromise = videoRef.current.play();
+  useEffect(() => {
+    const videoEl = videoRef.current;
+    if (!videoEl) return;
+    let observer;
+    // Intentar reproducir el video al montar si está visible
+    const tryPlay = () => {
+      if (videoEl && videoEl.offsetParent !== null) {
+        const playPromise = videoEl.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
+      }
+    };
+    tryPlay();
+    // Callback para Intersection Observer
+    const handleIntersection = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tryPlay();
+        } else {
+          videoEl.pause();
+          videoEl.currentTime = 0;
+        }
+      });
+    };
+    observer = new window.IntersectionObserver(handleIntersection, {
+      threshold: 0.2
+    });
+    observer.observe(videoEl);
+    return () => {
+      if (observer && videoEl) observer.unobserve(videoEl);
+    };
+  }, []);
+
+  useEffect(() => {
+    const videoEl = videoRef.current;
+    if (!videoEl) return;
+    videoEl.muted = !isHovered;
+    if (isHovered) {
+      const playPromise = videoEl.play();
       if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.log('Autoplay prevented:', error);
-        });
+        playPromise.catch(() => {});
       }
     }
-  };
-
-  const handleMouseLeave = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-  };
+  }, [isHovered]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -66,13 +90,14 @@ function ExploreVideoCard({ video }) {
       to="/" 
       className={`explore-video-card ${isHovered ? 'is-hovered' : ''}`}
       onClick={handleClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        handleMouseLeave();
-      }}
+      tabIndex={0}
+      role="button"
+      aria-label={`Ver video de ${video.profiles?.username || 'usuario'}`}
+  onMouseEnter={() => setIsHovered(true)}
+  onMouseLeave={() => setIsHovered(false)}
+      style={{ transition: 'box-shadow 0.2s, transform 0.2s' }}
     >
-      <div className="video-thumbnail">
+      <div className="video-thumbnail" style={{ transition: 'box-shadow 0.2s, transform 0.2s' }}>
         <video
           ref={videoRef}
           src={`https://kwajnaiebdhdonootfwh.supabase.co/storage/v1/object/public/videos/${video.storage_path}`}
@@ -81,6 +106,9 @@ function ExploreVideoCard({ video }) {
           loop
           playsInline
           preload="metadata"
+          loading="lazy"
+          autoPlay
+          style={{ width: '100%', background: '#000', borderRadius: '12px', transition: 'box-shadow 0.2s, transform 0.2s' }}
         />
         <div className="video-stats">
           <span><FaPlay /> {formatNumber(video.views_count || 0)}</span>
@@ -111,7 +139,7 @@ function ExploreVideoCard({ video }) {
       </div>
     </Link>
   )
-}
+});
 
 function formatNumber(num) {
   if (num >= 1000000) {
@@ -129,51 +157,53 @@ function Explore() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchVideos()
-  }, [selectedCategory])
+    async function fetchVideos() {
+      try {
+        setLoading(true)
+        let query = supabase
+          .from('videos')
+          .select(`
+            *,
+            profiles:user_id (
+              username,
+              avatar_url
+            )
+          `)
+          .order('created_at', { ascending: false }) // Primero ordenamos por fecha
+          .limit(100) // Obtenemos los últimos 100 videos
+          .then(result => ({
+            ...result,
+            data: result.data?.sort(() => Math.random() - 0.5).slice(0, 20) // Mezclamos aleatoriamente y tomamos 20
+          }))
+        
+        if (selectedCategory !== 'Todo') {
+          query = query.eq('category', selectedCategory)
+        }
 
-  async function fetchVideos() {
-    try {
-      setLoading(true)
-      let query = supabase
-        .from('videos')
-        .select(`
-          *,
-          profiles:user_id (
-            username,
-            avatar_url
-          )
-        `)
-        .order('created_at', { ascending: false }) // Primero ordenamos por fecha
-        .limit(100) // Obtenemos los últimos 100 videos
-        .then(result => ({
-          ...result,
-          data: result.data?.sort(() => Math.random() - 0.5).slice(0, 20) // Mezclamos aleatoriamente y tomamos 20
-        }))
-      
-      if (selectedCategory !== 'Todo') {
-        query = query.eq('category', selectedCategory)
+        const { data, error } = await query
+        
+        if (error) throw error
+        setVideos(data || [])
+      } catch (error) {
+        console.error('Error fetching videos:', error)
+      } finally {
+        setLoading(false)
       }
-
-      const { data, error } = await query
-      
-      if (error) throw error
-      setVideos(data || [])
-    } catch (error) {
-      console.error('Error fetching videos:', error)
-    } finally {
-      setLoading(false)
     }
-  }
+    fetchVideos();
+  }, [selectedCategory]);
 
   return (
     <div className="explore-container">
-      <div className="categories-scroll">
+      <div className="categories-scroll" style={{ scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch' }}>
         {categories.map(category => (
           <button
             key={category}
             className={`category-button ${selectedCategory === category ? 'active' : ''}`}
             onClick={() => setSelectedCategory(category)}
+            tabIndex={0}
+            aria-label={`Filtrar por ${category}`}
+            style={{ transition: 'background 0.2s, color 0.2s' }}
           >
             {category}
           </button>
@@ -182,18 +212,18 @@ function Explore() {
 
       <div className="explore-grid">
         {loading ? (
-          <div className="loading">Cargando videos...</div>
+          <div className="skeleton-grid">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="skeleton-card" />
+            ))}
+          </div>
         ) : (
           videos.map(video => (
             <ExploreVideoCard key={video.id} video={video} />
           ))
         )}
       </div>
-  <div className="sidebar-footer">
-  <div style={{marginBottom: '8px', color: '#111'}}>Cuentas que sigues</div>
-  <div style={{marginBottom: '8px', color: '#111'}}>Las cuentas que sigues aparecerán aquí</div>
-  <div style={{marginBottom: '8px', color: '#111'}}>© 2025 TikTok</div>
-</div>
+  
     </div>
   )
 }

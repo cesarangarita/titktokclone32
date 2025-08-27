@@ -1,7 +1,6 @@
 :root {
   --primary: #FE2C55;
-  --black: #121212;
-  --gray-91: #8A8B91;
+    --gray-91: #8A8B91;
   --gray-a7: #A6A7AB;
   --white: #FFFFFF;
 }
@@ -14,7 +13,7 @@
 
 body {
   font-family: "TikTok Display", Arial, sans-serif;
-  background-color: var(--black);
+  background-color: var(--white);
   color: var(--white);
 }
 
@@ -24,6 +23,8 @@ body {
   min-height: 100vh;
   margin-top: 0;
   padding-top: 0;
+  min-width: 100vw;
+
 }
 
 /* Sidebar/Navbar styles */
@@ -226,7 +227,7 @@ body {
   left: 0;
   right: 0;
   padding: 6px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  
 }
 
 .video-description {
@@ -293,7 +294,7 @@ body {
 
 .video-container:hover {
   transform: scale(1);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+  
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 

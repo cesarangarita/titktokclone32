@@ -9,12 +9,7 @@ function Profile() {
   const [userProfile, setUserProfile] = useState(null)
   const [activeTab, setActiveTab] = useState('videos')
   const [loading, setLoading] = useState(true)
-  const [stats, setStats] = useState({
-    totalVideos: 0,
-    totalLikes: 0,
-    followers: 0,
-    following: 0
-  })
+  
 
   const fetchUserProfile = async () => {
     try {
@@ -81,7 +76,7 @@ function Profile() {
     } else {
       setLoading(false)
     }
-  }, [user])
+  })
 
   if (!user) return <div>Por favor inicia sesión para ver tu perfil</div>
   if (loading) return <div>Cargando...</div>
@@ -117,11 +112,8 @@ function Profile() {
             </div>
           </div>
 
-          <p className="profile-bio">{userProfile?.bio || 'No hay biografía'}</p>
-          
-          <button className="edit-profile-btn" onClick={handleEditProfile}>
-            Editar perfil
-          </button>
+         
+        
         </div>
       </div>
 

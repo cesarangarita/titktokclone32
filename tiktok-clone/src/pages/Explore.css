@@ -1,3 +1,53 @@
+@media (max-width: 600px) {
+  .explore-container {
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 64px;
+    max-width: 81%;
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: -400px;
+  }
+  .explore-grid {
+    
+  }
+  .mobile-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+
+    background: #fff;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  }
+  .categories-scroll {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    margin: 0px;
+    padding: 0px;
+  }
+  .bottom-nav-mobile{
+    position: relative;
+ z-index: 2000;
+ margin-top: -500px;
+  }
+  .main-content {
+    height: 87%;
+  }
+}
+@media (max-width: 600px) {
+  .explore-container {
+    /* Suponiendo que MobileNav tiene un alto fijo, por ejemplo 64px */
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    padding-bottom: 64px; /* Para que el contenido no quede debajo del MobileNav */
+  }
+}
 /* Feed ocupa todo el ancho en móvil */
 .explore-feed-container {
   display: flex;
@@ -6,7 +56,6 @@
   justify-content: center;
   height: 100vh;
   width: 100vw;
-  background: #111;
 }
 /* Feed vertical, sin scroll horizontal */
 .explore-feed {
@@ -25,7 +74,6 @@
     width: 400px;
     max-width: 100vw;
   }
-
 }
 
 .categories-scroll {
@@ -54,10 +102,6 @@
   transition: background-color 0.2s;
 }
 
-.category-button:hover {
-  background-color: rgba(22, 24, 35, 0.03);
-}
-
 .category-button.active {
   background-color: var(--text-color);
   color: var(--background-color);
@@ -74,7 +118,7 @@
 @media (min-width: 601px) {
   .explore-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 16px;
   }
 }
@@ -97,10 +141,8 @@
   .category-button {
     border-color: rgba(255, 255, 255, 0.12);
   }
-  
+
   .category-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
 }
-
-

@@ -86,7 +86,7 @@ function Upload() {
       const fileName = `${user.id}-${timestamp}.${fileExt}`;
 
       // Subir el video a Supabase Storage
-      const { data, error: fileError } = await supabase.storage
+      const { error: fileError } = await supabase.storage
         .from('videos')
         .upload(fileName, file, {
           cacheControl: '3600',
@@ -100,12 +100,12 @@ function Upload() {
       }
 
       // Obtener la URL pública del video
-      const { data: { publicUrl } } = supabase.storage
+      supabase.storage
         .from('videos')
         .getPublicUrl(fileName);
 
       // Crear el registro en la base de datos
-      const { data: videoData, error: dbError } = await supabase
+      const { error: dbError } = await supabase
         .from('videos')
         .insert([
           {

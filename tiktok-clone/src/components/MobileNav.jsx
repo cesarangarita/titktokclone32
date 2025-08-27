@@ -2,33 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logomastiktok from '../assets/logomastiktok.svg';
 
+import './MobileNav.css';
 const MobileNav = () => {
 	const navigate = useNavigate();
-	return (
-		<>
-			<style>{`
-				@media (min-width: 601px) {
-					.bottom-nav-mobile { display: none !important; }
-				}
-				@media (max-width: 600px) {
-					.bottom-nav-mobile { display: flex !important; }
-				}
-			`}</style>
-			<div className="bottom-nav-mobile" style={{
-				position: 'fixed',
-				left: 0,
-				bottom: '16px',
-				width: '100%', // Adaptable al ancho
-				minWidth: 0,
-				maxWidth: '100vw',
-				height: '64px',
-				background: '#000',
-				borderTop: '1px solid #eee',
-				justifyContent: 'space-around',
-				alignItems: 'center',
-				zIndex: 1000,
-				boxShadow: '0 -2px 8px rgba(0,0,0,0.0)'
-			}}>
+		return (
+			<>
+				
+				<div className="bottom-nav-mobile">
 			<button style={{background:'none',border:'none',display:'flex',flexDirection:'column',alignItems:'center',color:'#fff',fontSize:'24px',cursor:'pointer'}} aria-label="Inicio">
 					<span style={{display:'inline-flex',alignItems:'center'}} onClick={()=>navigate('/') }>
 						<svg width="40" height="40" viewBox="0 0 48 48" fill="#fff" xmlns="http://www.w3.org/2000/svg">

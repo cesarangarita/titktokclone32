@@ -226,24 +226,44 @@ function Home() {
 
   // refs para todos los videos
   const videoRefs = useRef([]);
-
-  const [hasInteracted, setHasInteracted] = useState(false);
+  const [centeredIndexes, setCenteredIndexes] = useState([]);
 
   useEffect(() => {
+    // Intersection Observer para cada video
+    const observers = [];
     videoRefs.current.forEach((videoEl, idx) => {
-      if (videoEl) {
-        if (idx === currentVideoIndex) {
-          videoEl.muted = !hasInteracted;
-          if (hasInteracted) {
+      if (!videoEl) return;
+      const observer = new window.IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.intersectionRatio >= 0.8) {
+            setCenteredIndexes(prev => {
+              const arr = [...prev];
+              if (!arr.includes(idx)) arr.push(idx);
+              return arr;
+            });
+            videoEl.muted = false;
             videoEl.play().catch(() => {});
+          } else if (entry.isIntersecting) {
+            setCenteredIndexes(prev => prev.filter(i => i !== idx));
+            videoEl.muted = true;
+            videoEl.play().catch(() => {});
+          } else {
+            setCenteredIndexes(prev => prev.filter(i => i !== idx));
+            videoEl.muted = true;
+            videoEl.pause();
+            videoEl.currentTime = 0;
           }
-        } else {
-          videoEl.muted = true;
-          videoEl.pause();
-        }
-      }
+        });
+      }, { threshold: [0, 0.2, 0.8, 1] });
+      observer.observe(videoEl);
+      observers.push(observer);
     });
-  }, [currentVideoIndex, videos.length, hasInteracted]);
+    return () => {
+      observers.forEach((observer, idx) => {
+        if (videoRefs.current[idx]) observer.unobserve(videoRefs.current[idx]);
+      });
+    };
+  }, [videos.length]);
 
   if (!videos || videos.length === 0) {
     return (
@@ -268,9 +288,9 @@ function Home() {
                 ref={el => videoRefs.current[index] = el}
                 src={`https://kwajnaiebdhdonootfwh.supabase.co/storage/v1/object/public/${video.storage_bucket}/${video.storage_path}`}
                 controls
-                autoPlay={index === currentVideoIndex && hasInteracted}
+                autoPlay
                 loop
-                muted={index !== currentVideoIndex || !hasInteracted}
+                muted={!centeredIndexes.includes(index)}
                 style={{ width: '100%', height: '100%' }}
                 preload="metadata"
                 onLoadStart={() => setLoadingVideoIndex(index)}
